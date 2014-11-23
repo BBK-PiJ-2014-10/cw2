@@ -175,21 +175,22 @@ public class FractionCalculator {
                 evaluate(getCurrentValue(), input + " ");
             }
             if (isResetMode()) {
-                System.out.println("ERROR");
+                System.out.println("ERROR\n");
             }
         }
     }
 
     public static void main(String[] args) {
+        System.out.println("*** Welcome to Konrad Korzel's Fraction Calculator! ***\n");
         FractionCalculator fractionCalculator = new FractionCalculator();
         while (!fractionCalculator.isExitMode()) {
             try {
                 fractionCalculator.init();
             } catch (Exception e) {
-                System.out.println("ERROR");
+                System.out.println("ERROR\n");
             }
         }
-        System.out.println("Goodbye");
+        System.out.println("Goodbye\n");
     }
 }
 
