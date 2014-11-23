@@ -18,8 +18,9 @@ public class Fraction {
         String returnVal;
         if (getDenominator() == 1) {
             returnVal = String.valueOf(getNumerator());
+        } else {
+            returnVal = "" + getNumerator() + '/' + getDenominator();
         }
-        returnVal = "" + getNumerator() + '/' + getDenominator();
         return returnVal;
     }
 
