@@ -74,19 +74,15 @@ public class FractionCalculator {
         if (operator.length() > 0) {
             switch (operator) {
                 case "+":
-                    System.out.println("got in +");
                     setCurrentValue(getCurrentValue().add(newFraction));
                     break;
                 case "-":
-                    System.out.println("got in -");
                     setCurrentValue(getCurrentValue().substract(newFraction));
                     break;
                 case "*":
-                    System.out.println("got in *");
                     setCurrentValue(getCurrentValue().multiply(newFraction));
                     break;
                 case "/":
-                    System.out.println("got in /");
                     setCurrentValue(getCurrentValue().multiply(newFraction));
                     break;
             }
@@ -99,25 +95,30 @@ public class FractionCalculator {
     public void evaluate(Fraction fraction, String input) {
         String inputItem;
         for (int i = 0; i < input.length(); i++) {
+
             inputItem = Character.toString(input.charAt(i));
 
-            if (inputItem.equals("+") || inputItem.equals("-") || inputItem.equals("*")) {
-                System.out.println("got in 1");
+            if (inputItem.equals("+") || inputItem.equals("*")) {
                 setOperation(inputItem);
-            } else if (inputItem.equals("/")) {
-                System.out.println("got in 2");
-                if (input.charAt(i - 1) == ' ' && input.charAt(i + 1) == ' ') {
+            } else if (inputItem.equals("-")) {
+                if (Character.isDigit(input.charAt(i + 1))) {
+                    addDigit(inputItem);
+                } else {
                     setOperation(inputItem);
-                } else if (Character.isDigit(input.charAt(i - 1)) && Character.isDigit(input.charAt(i + 1))) {
+                }
+            } else if (inputItem.equals("/")) {
+                char previousChar = input.charAt(i - 1);
+                char nextChar = input.charAt(i + 1);
+                if (previousChar == ' ' && nextChar == ' ') {
+                    setOperation(inputItem);
+                } else if (Character.isDigit(previousChar) && (Character.isDigit(nextChar) || nextChar == '-')) {
                     Integer numerator = Integer.parseInt(getNumberStr());
                     setNumerator(numerator);
                     setFractionMode(true);
                 }
             } else if (Character.isDigit(input.charAt(i))) {
-                System.out.println("got in 3");
                 addDigit(inputItem);
             } else if (inputItem.equals(" ")) {
-                System.out.println("got in 4");
                 String numberStr = getNumberStr();
                 Fraction newFraction = new Fraction(0, 1);
 
@@ -132,20 +133,15 @@ public class FractionCalculator {
                     makeCalculation(newFraction);
                 }
             } else if (inputItem.equals("a") || inputItem.equals("A") || inputItem.equals("abs") ) {
-                System.out.println("got in 5");
                 setCurrentValue(getCurrentValue().absValue());
             // TODO: handle eg
             } else if (inputItem.equals("n") || inputItem.equals("N") || inputItem.equals("neg") ) {
-                System.out.println("got in 6");
                 setCurrentValue(getCurrentValue().negate());
             } else if (inputItem.equals("c") || inputItem.equals("C") || inputItem.equals("clear") ) {
-                System.out.println("got in 7");
                 setResetMode(true);
             } else if (inputItem.equals("q") || inputItem.equals("Q") || inputItem.equals("quit") ) {
-                System.out.println("got in 8");
                 setExitMode(true);
             } else {
-                System.out.println("got in 9");
                 setResetMode(true);
             }
         }   
@@ -153,7 +149,6 @@ public class FractionCalculator {
 
 
     public void init() {
-        System.out.println("init");
         setCurrentValue(new Fraction(0, 1));
         setOperation("");
         setResetMode(false);
@@ -165,7 +160,6 @@ public class FractionCalculator {
     }
 
     public static void main(String[] args) {
-        System.out.println("main");
         FractionCalculator fractionCalculator = new FractionCalculator();
         while (!fractionCalculator.isExitMode()) {
             fractionCalculator.init();
