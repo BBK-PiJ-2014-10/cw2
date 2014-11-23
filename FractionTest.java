@@ -10,21 +10,28 @@ public class FractionTest {
 
         // test divide by zero - should print an error and exit
         new Fraction(1, 0);
+
         // test multiply
-        Fraction f = new Fraction(3,10);
-        Fraction g = new Fraction(1,2);
-        Fraction h = new Fraction(3,5);
-        if (!f.equals(g.multiply(h))) {
-            System.out.println("Multiply failed");
-        }
+        Fraction g = new Fraction(1, 2);
+        Fraction h = new Fraction(3, 5);
+        test(g.multiply(h), new Fraction(3, 10), "Multiply failed");
 
         // test divide
-        Fraction i = new Fraction(5,6);
-        Fraction j = new Fraction(1,2);
-        Fraction k = new Fraction(3,5);
-        if (!i.equals(j.divide(k))) {
-            System.out.println("Divide failed");
-        }
+        Fraction j = new Fraction(1, 2);
+        Fraction k = new Fraction(3, 5);
+        test(j.divide(k), new Fraction(5, 6), "Divide failed");
+
+        // test add
+        Fraction l = new Fraction(1, 2);
+        Fraction m = new Fraction(3, 5);
+        test(l.add(m), new Fraction(11, 10), "Add failed");
+
+
+        // test substract
+        Fraction n = new Fraction(1, 2);
+        Fraction o = new Fraction(3, 5);
+        test(n.substract(o), new Fraction(-1, 10), "Substract failed");
+
 
         // test equals
         test(new Fraction(1, 2), new Fraction(1, 2), "error test 1");
@@ -33,6 +40,5 @@ public class FractionTest {
         test(new Fraction(-1, -2), new Fraction(1, 2), "error test 4");
         test(new Fraction(4, 8), new Fraction(1, 2), "error test 5");
 
-        // extend with extra tests
     }
 }
