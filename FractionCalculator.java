@@ -60,6 +60,9 @@ public class FractionCalculator {
     }
 
     public void setOperation(String operator) {
+        if (!operation.equals("")) {
+            setResetMode(true);
+        }
         operation = operator;
     }
 
@@ -67,6 +70,14 @@ public class FractionCalculator {
        String returnVal = operation;
        operation = "";
        return returnVal;
+    }
+
+    private String cleanInput(String input) {
+        input = input.replace("abs", "a");
+        input = input.replace("neg", "n");
+        input = input.replace("clear", "c");
+        input = input.replace("quit", "q");
+        return input;
     }
 
     private void makeCalculation(Fraction newFraction) {
@@ -86,17 +97,16 @@ public class FractionCalculator {
                     setCurrentValue(getCurrentValue().multiply(newFraction));
                     break;
             }
-            setOperation("");
         } else {
              setCurrentValue(newFraction);
         }
     }
 
-    public void evaluate(Fraction fraction, String input) {
-        String inputItem;
-        for (int i = 0; i < input.length(); i++) {
+    public void evaluate(Fraction fraction, String userInput) {
+        String input = cleanInput(userInput);
 
-            inputItem = Character.toString(input.charAt(i));
+        for (int i = 0; i < input.length(); i++) {
+            String inputItem = Character.toString(input.charAt(i));
 
             if (inputItem.equals("+") || inputItem.equals("*")) {
                 setOperation(inputItem);
@@ -132,15 +142,18 @@ public class FractionCalculator {
                     }
                     makeCalculation(newFraction);
                 }
-            } else if (inputItem.equals("a") || inputItem.equals("A") || inputItem.equals("abs") ) {
+            } else if (inputItem.toLowerCase().equals("a")) {
                 setCurrentValue(getCurrentValue().absValue());
-            // TODO: handle eg
-            } else if (inputItem.equals("n") || inputItem.equals("N") || inputItem.equals("neg") ) {
+            } else if (inputItem.toLowerCase().equals("n")) {
                 setCurrentValue(getCurrentValue().negate());
-            } else if (inputItem.equals("c") || inputItem.equals("C") || inputItem.equals("clear") ) {
+            } else if (inputItem.toLowerCase().equals("c")) {
                 setResetMode(true);
-            } else if (inputItem.equals("q") || inputItem.equals("Q") || inputItem.equals("quit") ) {
+                break;
+            } else if (inputItem.toLowerCase().equals("q")) {
                 setExitMode(true);
+                break;
+            } else if (isResetMode()) {
+                break;
             } else {
                 setResetMode(true);
             }
@@ -155,15 +168,28 @@ public class FractionCalculator {
         setExitMode(false);
         while (!isResetMode() && !isExitMode()) {
             System.out.println("Current value: " + getCurrentValue());
-            evaluate(getCurrentValue(), System.console().readLine() + " ");
+            String input = System.console().readLine();
+            if (input.equals("")) {
+                setExitMode(true);
+            } else {
+                evaluate(getCurrentValue(), input + " ");
+            }
+            if (isResetMode()) {
+                System.out.println("ERROR");
+            }
         }
     }
 
     public static void main(String[] args) {
         FractionCalculator fractionCalculator = new FractionCalculator();
         while (!fractionCalculator.isExitMode()) {
-            fractionCalculator.init();
+            try {
+                fractionCalculator.init();
+            } catch (Exception e) {
+                System.out.println("ERROR");
+            }
         }
+        System.out.println("Goodbye");
     }
 }
 
