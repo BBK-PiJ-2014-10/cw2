@@ -1,6 +1,3 @@
-/**
- * Created by keith for the second coursework assignment.
- */
 public class Fraction {
     private int numerator;
     private int denominator;
@@ -18,7 +15,12 @@ public class Fraction {
 
     @Override
     public String toString() {
-        return "" + getNumerator() + '/' + getDenominator();
+        String returnVal;
+        if (getDenominator() == 1) {
+            returnVal = String.valueOf(getNumerator());
+        }
+        returnVal = "" + getNumerator() + '/' + getDenominator();
+        return returnVal;
     }
 
     public int getNumerator() {
@@ -59,9 +61,73 @@ public class Fraction {
 
     public Fraction multiply(Fraction other) {
 
-        int num = this.getNumerator() * other.getNumerator();
-        int denom = this.getDenominator() * other.getDenominator();
+        int num = getNumerator() * other.getNumerator();
+        int denom = getDenominator() * other.getDenominator();
         return new Fraction(num, denom);
+    }
+
+    public Fraction divide(Fraction other) {
+
+        int num = getNumerator() * other.getDenominator();
+        int denom = getDenominator() * other.getNumerator();
+        return new Fraction(num, denom);
+    }
+
+    public Fraction add(Fraction other) {
+
+        int denom = myLcm(getDenominator(), other.getDenominator());
+        int thisMultiNum = denom / getDenominator();
+        int otherMultiNum = denom / other.getDenominator();
+        int num = getNumerator() * thisMultiNum + other.getNumerator() * otherMultiNum;
+        return new Fraction(num, denom);
+    }
+
+    public Fraction substract(Fraction other) {
+
+        int denom = myLcm(getDenominator(), other.getDenominator());
+        int thisMultiNum = denom / getDenominator();
+        int otherMultiNum = denom / other.getDenominator();
+        int num = getNumerator() * thisMultiNum - other.getNumerator() * otherMultiNum;
+        return new Fraction(num, denom);
+    }
+
+    public Fraction negate() {
+
+        int num = getNumerator() * -1;
+        int denom = getDenominator();
+        return new Fraction(num, denom);
+    }
+
+    public Fraction absValue() {
+
+        int num = getNumerator();
+        int denom = getDenominator();
+
+        if (num < 0) {
+            num *= -1;
+        }
+        return new Fraction(num, denom);
+    }
+
+    private int myLcm(int a, int b) {
+        int lcm = 0;
+        boolean finished = false;
+        int greater;
+
+        if (a > b) {
+            greater = a;
+        } else {
+            greater = b;
+        }
+
+        while (!finished) {
+            if (greater % a == 0 && greater % b == 0) {
+                lcm = greater;
+                finished = true;
+            }
+            greater ++;
+        }
+        return lcm;
     }
 
     private int myGcd(int a, int b) {
@@ -72,4 +138,3 @@ public class Fraction {
         }
         return a;
     }
-}
